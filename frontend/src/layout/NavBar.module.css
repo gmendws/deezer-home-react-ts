@@ -1,0 +1,36 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding: 0 16px;
+}
+
+.logo {
+    width: 148px;
+    margin: 0 auto;
+}
+
+.logo img {
+    height: 30px;
+    width: auto;
+}
+
+.login {
+    margin-top: 10px;
+}
+
+.login button {
+    color: #fff;
+    background-color: transparent;
+    border: solid;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    text-transform: uppercase;
+}
+  
+  
