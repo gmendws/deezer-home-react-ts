@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import './App.css'
-import NavBar from './layout/NavBar'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NavBar from './components/layout/NavBar'
+import Home from "./components/pages/Home";
+import Login from "./components/pages/Login";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
+    <Router>
       <NavBar />
-    </div>
+      <Home />
+    </Router>
   )
 }
 

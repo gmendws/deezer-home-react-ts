@@ -1,5 +1,5 @@
 import styles from "./NavBar.module.css"
-import logo from "../img/Deezer_Logo_RVB_White.svg"
+import logo from "../../img/Deezer_Logo_RVB_White.svg"
 
 function NavBar() {
   return (
