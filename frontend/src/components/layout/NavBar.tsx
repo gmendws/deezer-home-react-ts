@@ -1,13 +1,14 @@
 import styles from "./NavBar.module.css"
 import logo from "../../img/Deezer_Logo_RVB_White.svg"
-import Partners from "../styled-components/Partners.style";
+import Partners from "../styled-components/Partners.style"
 import styled from 'styled-components'
+import { Link } from "react-router-dom"
 
 const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 60px;
+  height: 100px;
   padding: 0 16px;
 `;
 
@@ -49,7 +50,9 @@ export default function NavBar() {
         <LogoStyle src={logo} alt="Deezer Logo" />
       </DivLogo>
       <DivLogin>
-        <ButtonLogin>Login</ButtonLogin>
+        <Link to="/login">
+          <ButtonLogin>Login</ButtonLogin>
+        </Link>    
       </DivLogin> 
     </Nav>
   );

@@ -1,7 +1,9 @@
 import React from "react";
 import Box from "../layout/Box";
 import styled from 'styled-components'
-import Footer from "../layout/Footer";
+import NavBar from "../layout/NavBar";
+import { Title } from "../styled-components/Title.style";
+
 
 const SectionHome = styled.section`
   width: 100%;
@@ -11,12 +13,6 @@ const SectionHome = styled.section`
   justify-content: center;
   padding: 4em;
 
-  & h1 {
-    font-size: 42px;
-    margin-bottom: .5em;
-    color: #ffffff;
-  }
-
   & img {
     width: 350px;
     margin: 2em 0;
@@ -24,9 +20,9 @@ const SectionHome = styled.section`
 `
 
 const Home: React.FC = () => {
-  return (
+  return (   
     <SectionHome>
-      <h1>O Poder da Música</h1>
+      <Title>O Poder da Música</Title>
       <Box 
         title="deezer Free"
         descripcion="Música, podcasts e rádios. Recomendações personalizadas de acordo com seu gosto musical."
@@ -39,7 +35,6 @@ const Home: React.FC = () => {
         button="EXPERIMENTE DE GRAÇA"
         background="linear-gradient(69.06deg,#b84fdd -26.76%,#4965f4 44.6%,#2efb74 132.54%)"
       />
-      <Footer />
     </SectionHome>
   )
 };

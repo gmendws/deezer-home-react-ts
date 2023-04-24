@@ -15,6 +15,7 @@ export const BoxDiv = styled.div.attrs((props:BoxDivProps) => ({
   margin: 20px;
   text-align: center;
   padding: 30px 30px;
+  
 
   & h2 {
     font-size: 38px;
@@ -27,5 +28,9 @@ export const BoxDiv = styled.div.attrs((props:BoxDivProps) => ({
   & h5 {
     text-decoration: underline;
     color: gray;
+  }
+
+  & h2, h4, h5 {
+    padding: 8px;
   }
 `

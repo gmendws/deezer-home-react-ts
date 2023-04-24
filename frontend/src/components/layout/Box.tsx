@@ -1,5 +1,6 @@
 import { BoxDiv } from "../styled-components/Box.style";
-import { BoxButton } from "../styled-components/Button.style";
+import { BoxButton } from "../styled-components/BoxButton.style";
+import styled from "styled-components";
 
 interface BoxProps {
     title: string;
