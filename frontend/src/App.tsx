@@ -7,7 +7,6 @@ import Register from "./components/pages/Register";
 function App() {
   return (
     <Router>
-      <NavBar />
       <Routes>
         <Route path="/" Component={Home} />
         <Route path="/login" Component={Login} />

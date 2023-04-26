@@ -4,10 +4,12 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import routerLogin from './routes/login';
 import routerRegister from './routes/register';
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express()
+app.use(cors)
 app.use(json())
 app.use(routerLogin)
 app.use(routerRegister)

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Title } from '../styled-components/Title.style';
 import { SubmitButton } from '../styled-components/SubmitButton.style';
-import { SignUpLink } from '../styled-components/SignUpLink.style';
 
 const RegisterWrapper = styled.div`
   display: flex;
@@ -11,6 +10,17 @@ const RegisterWrapper = styled.div`
   align-items: center;
   padding: 150px 0;
 
+  & a {
+    color: #ef5466;
+    text-decoration: none;
+    margin-top: 20px;
+    font-size: 14px;
+
+    &:hover {
+      text-decoration: underline;
+      color: #f00d0d;
+    }
+  }
 `;
 
 const Form = styled.form`
@@ -86,7 +96,7 @@ const Register = () => {
           <SubmitButton type="submit">Register</SubmitButton>
         </ButtonWrapper>
       </Form>
-      <SignUpLink href="/login">Você Já está cadastrado na Deezer? Login.</SignUpLink>
+      <Link to="/login">Você Já está cadastrado na Deezer? Login.</Link>
     </RegisterWrapper>
   );
 };

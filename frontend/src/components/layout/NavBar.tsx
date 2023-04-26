@@ -3,6 +3,7 @@ import logo from "../../img/Deezer_Logo_RVB_White.svg"
 import Partners from "../styled-components/Partners.style"
 import styled from 'styled-components'
 import { Link } from "react-router-dom"
+import Home from "../pages/Home"
 
 const Nav = styled.nav`
   display: flex;
@@ -47,7 +48,9 @@ export default function NavBar() {
     <Nav>
       <Partners />
       <DivLogo>
-        <LogoStyle src={logo} alt="Deezer Logo" />
+        <Link to="/">
+          <LogoStyle src={logo} alt="Deezer Logo"/>
+        </Link>
       </DivLogo>
       <DivLogin>
         <Link to="/login">
