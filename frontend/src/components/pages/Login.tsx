@@ -5,12 +5,13 @@ import { SubmitButton } from '../styled-components/SubmitButton.style';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import logo from "../../img/Deezer_Logo_RVB_White.svg"
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 150px;
+  padding: 200px 0;
 `;
 
 const Form = styled.form`
@@ -43,6 +44,17 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
+const DivLogo = styled.div`
+  width: 148px;
+  margin: 0 auto;  
+  margin-top: 40px;
+`;
+
+const LogoStyle = styled.img`
+  height: 24px;
+  width: auto;
+`
+
 type Inputs = {
   email: string,
   password: string,
@@ -51,21 +63,28 @@ type Inputs = {
 
 export default function Login() {
   const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (data) => { 
-    //await api.post("/auth/login", data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const response = await api.post("/auth/login", data);
-    console.log(response);
+    localStorage.setItem('token', response.data.token);
+    alert('Login efetuado com sucesso!!');
   };
 
   return (
-    <Container>
-      <Title>Fazer Login</Title> 
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <Input {...register("email", {required: true})} type="email" placeholder="Email" />
-        <Input {...register("password", {required: true})} type="password" placeholder="Senha" />
-        <SubmitButton type="submit">Entrar</SubmitButton>
-        <Link to="/register">Ainda não tem uma conta? Cadastre-se agora</Link>
-      </Form>
-    </Container>
+    <>
+      <DivLogo>
+        <Link to="/">
+          <LogoStyle src={logo} alt="Deezer Logo"/>
+        </Link>
+      </DivLogo>
+      <Container>
+        <Title>Fazer Login</Title>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Input {...register("email", { required: true })} type="email" placeholder="Email" />
+          <Input {...register("password", { required: true })} type="password" placeholder="Senha" />
+          <SubmitButton type="submit">Entrar</SubmitButton>
+          <Link to="/register">Ainda não tem uma conta? Cadastre-se agora</Link>
+        </Form>
+      </Container>
+    </>
   );
 }

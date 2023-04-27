@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { Title } from '../styled-components/Title.style';
 import { SubmitButton } from '../styled-components/SubmitButton.style';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import api from '../../services/api';
 
 const RegisterWrapper = styled.div`
   display: flex;
@@ -66,39 +68,46 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-const Register = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log('Form submitted');
-  };
+type Inputs = {
+  name: string,
+  email: string,
+  password: string,
+  confirmPassword: string,
+}
+
+export default function Register() {
+  const { register, handleSubmit } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const response = await api.post("/auth/register", data);
+    console.log(response);
+    alert('Usuario criado com sucesso!');
+  }
 
   return (
     <RegisterWrapper>
       <Title>Cadastre-se</Title>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <InputWrapper>
-          <Label htmlFor="name">Name</Label>
-          <Input type="text" id="name" name="name" />
+          <Label>Nome</Label>
+          <Input {...register("name", { required: true })} type="text" />
         </InputWrapper>
         <InputWrapper>
-          <Label htmlFor="email">Email</Label>
-          <Input type="email" id="email" name="email" />
+          <Label>Email</Label>
+          <Input {...register("email", { required: true })} type="email" />
         </InputWrapper>
         <InputWrapper>
-          <Label htmlFor="password">Password</Label>
-          <Input type="password" id="password" name="password" />
+          <Label>Senha</Label>
+          <Input {...register("password", { required: true })} type="password" />
         </InputWrapper>
         <InputWrapper>
-          <Label htmlFor="confirmPassword">Confirm Password</Label>
-          <Input type="password" id="confirmPassword" name="confirmPassword" />
+          <Label>Confirme sua senha</Label>
+          <Input {...register("confirmPassword", { required: true })} type="password" />
         </InputWrapper>
         <ButtonWrapper>
-          <SubmitButton type="submit">Register</SubmitButton>
+          <SubmitButton type="submit">Registrar</SubmitButton>
         </ButtonWrapper>
       </Form>
       <Link to="/login">Você Já está cadastrado na Deezer? Login.</Link>
     </RegisterWrapper>
   );
 };
-
-export default Register;

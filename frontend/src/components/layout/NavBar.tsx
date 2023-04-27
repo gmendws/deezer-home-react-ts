@@ -14,7 +14,6 @@ const Nav = styled.nav`
 `;
 
 const DivLogo = styled.div`
-  width: 148px;
   margin: 0 auto;  
   margin-top: 40px;
 `;
