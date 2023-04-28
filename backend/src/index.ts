@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import routerLogin from './routes/login';
 import routerRegister from './routes/register';
 import cors from 'cors';
+import routerCreateMusic from './routes/createMusic';
+import routerMusic from './routes/music';
 
 dotenv.config();
 
@@ -13,6 +15,8 @@ app.use(cors())
 app.use(json())
 app.use(routerLogin)
 app.use(routerRegister)
+app.use(routerCreateMusic)
+app.use(routerMusic)
 
 const dbUser = process.env.DB_USER
 const dbPassword = process.env.DB_PASS
