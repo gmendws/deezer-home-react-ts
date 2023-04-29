@@ -1,11 +1,12 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Title } from '../styled-components/Title.style';
 import { SubmitButton } from '../styled-components/SubmitButton.style';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import logo from "../../img/Deezer_Logo_RVB_White.svg"
+import logo from "../../img/Deezer_Logo_RVB_White.svg";
+import Alert from '../layout/Alert';
+import { useState } from 'react';
 
 const Container = styled.div`
   display: flex;
@@ -60,30 +61,49 @@ type Inputs = {
   password: string,
 };
 
-
 export default function Login() {
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
+
+  const [alertMessage, setAlertMessage] = useState('');
+  const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const response = await api.post("/auth/login", data);
-    localStorage.setItem('token', response.data.token);
-    alert('Login efetuado com sucesso!!');
+    try {
+      const response = await api.post("/auth/login", data);
+      localStorage.setItem('token', response.data.token);
+      setAlertMessage(response.data.msg);
+      navigate('/music');
+    } catch (error: any ) {
+      setAlertMessage(error.response.data.msg);
+    }
   };
 
   return (
     <>
       <DivLogo>
         <Link to="/">
-          <LogoStyle src={logo} alt="Deezer Logo"/>
+          <LogoStyle src={logo} alt="Deezer Logo" />
         </Link>
       </DivLogo>
       <Container>
         <Title>Fazer Login</Title>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <Input {...register("email", { required: true })} type="email" placeholder="Email" />
-          <Input {...register("password", { required: true })} type="password" placeholder="Senha" />
-          <SubmitButton type="submit">Entrar</SubmitButton>
+          <Input
+            {...register("email")}
+            type="email"
+            placeholder="Email"
+          />
+          <Input
+            {...register("password")}
+            type="password"
+            placeholder="Senha"
+          />
+          <SubmitButton type="submit">
+            Entrar
+          </SubmitButton>
           <Link to="/register">Ainda não tem uma conta? Cadastre-se agora</Link>
         </Form>
+        {alertMessage && <Alert message={alertMessage} />}
       </Container>
     </>
   );
