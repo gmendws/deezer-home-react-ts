@@ -4,6 +4,7 @@ import Partners from "../styled-components/Partners.style"
 import styled from 'styled-components'
 import { Link } from "react-router-dom"
 import Home from "../pages/Home"
+import { useEffect, useState } from "react"
 
 const Nav = styled.nav`
   display: flex;
@@ -16,6 +17,7 @@ const Nav = styled.nav`
 const DivLogo = styled.div`
   margin: 0 auto;  
   margin-top: 40px;
+  width: 30px;
 `;
 
 const LogoStyle = styled.img`
@@ -43,6 +45,26 @@ const ButtonLogin = styled.button`
 `
 
 export default function NavBar() {
+  const [isLogged, setIsLogged] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
+  }, []);
+
+  const handleClick = () => {
+    if (isLogged) {
+      localStorage.removeItem('token');
+      setIsLogged(false);
+    } else {
+      window.location.href = '/login';
+    }
+  };
+
   return (
     <Nav>
       <Partners />
@@ -53,7 +75,7 @@ export default function NavBar() {
       </DivLogo>
       <DivLogin>
         <Link to="/login">
-          <ButtonLogin>Login</ButtonLogin>
+          <ButtonLogin onClick={handleClick}>{isLogged ? 'Deslogar' : 'Login'}</ButtonLogin>
         </Link>    
       </DivLogin> 
     </Nav>

@@ -19,7 +19,7 @@ routerCreateMusic.post("/createMusic", async (req: Request, res: Response) => {
 
     await music.save();
 
-    res.status(200).json({ msg: "Música criada com sucesso" });
+    res.status(200).json({ msg: "Música cadastrada com sucesso" });
   } catch (err) {
     console.log(err);
     res

@@ -65,6 +65,7 @@ export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
   const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState('');
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -75,6 +76,7 @@ export default function Login() {
       navigate('/music');
     } catch (error: any ) {
       setAlertMessage(error.response.data.msg);
+      setAlertType('error');
     }
   };
 
@@ -103,7 +105,7 @@ export default function Login() {
           </SubmitButton>
           <Link to="/register">Ainda não tem uma conta? Cadastre-se agora</Link>
         </Form>
-        {alertMessage && <Alert message={alertMessage} />}
+        {alertMessage && <Alert message={alertMessage} type={alertType}/>}
       </Container>
     </>
   );

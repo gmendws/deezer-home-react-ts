@@ -32,7 +32,19 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 400px;
+  width: 500px;
+
+  & a {
+    color: #ef5466;
+    text-decoration: none;
+    margin-top: 20px;
+    font-size: 14px;
+
+    &:hover {
+      text-decoration: underline;
+      color: #f00d0d;
+    }
+  }
 `;
 
 const Input = styled.input`
@@ -45,42 +57,103 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
+const MusicListContainer = styled.div`
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+`;
+
+const MusicItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: #ffffff;
+  }
+
+  span {
+    font-size: 1rem;
+    color: #666;
+  }
+`;
+
+
 type Inputs = {
-    nameMusic: string,
-    singer: string,
+  nameMusic: string,
+  singer: string,
+  musicSearch: string,
 };
 
+interface Music {
+  nameMusic: string;
+  singer: string;
+}
+
 export default function Music() {
-    const { register, handleSubmit } = useForm<Inputs>();
-    const [alertMessage, setAlertMessage] = useState('');
-    const [alertType, setAlertType] = useState('');
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
-      try{
+  const { register, handleSubmit } = useForm<Inputs>();
+
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState('');
+  const [showSearchForm, setShowSearchForm] = useState(false);
+  const [musics, setMusics] = useState<Array<Music>>([]);
+
+  const clear = () => {
+    setAlertMessage('')
+    setAlertType('')
+    setMusics([])
+  }
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (!showSearchForm) {
+      try {
         const response = await api.post("/createMusic", data);
         setAlertMessage(response.data.msg);
         setAlertType('sucess');
-      } catch(error: any) {
+      } catch (error: any) {
         setAlertMessage(error.response.data.msg);
         setAlertType('error');
       }
-    };
+    } else {
+      try {
+        const response = await api.get(`/music/${data.musicSearch}`);
+        setAlertMessage(response.data.nameMusic);
+        setAlertType('sucess');
+        setMusics(response.data)
+      } catch (error: any) {
+        setAlertMessage(error.response.data.errors);
+        setAlertType('error');
+      }
+    }
+  };
 
-    return (
-        <>
-          <DivLogo>
-            <Link to="/">
-              <LogoStyle src={logo} alt="Deezer Logo" />
-            </Link>
-          </DivLogo>
-          <Container>
-            <Title>Publique uma música</Title> 
+  return (
+    <>
+      <DivLogo>
+        <Link to="/">
+          <LogoStyle src={logo} alt="Deezer Logo" />
+        </Link>
+      </DivLogo>
+      <Container>
+        {!showSearchForm ? (
+          <>
+            <Title>Publique uma música</Title>
             <Form onSubmit={handleSubmit(onSubmit)}>
-              <Input             
+              <Input
                 {...register("singer")}
                 type="singer"
                 placeholder="Cantor"
               />
-              <Input             
+              <Input
                 {...register("nameMusic")}
                 type="nameMusic"
                 placeholder="Nome da Música"
@@ -88,9 +161,39 @@ export default function Music() {
               <SubmitButton type="submit">
                 Enviar
               </SubmitButton>
+              <a onClick={() => { setShowSearchForm(true), clear() }}>Clique aqui para consultar as músicas cadastradas!</a>
             </Form>
-            {alertMessage && <Alert message={alertMessage} type={alertType}/>}
-          </Container>
-        </>
-    )
+            {alertMessage && <Alert message={alertMessage} type={alertType} />}
+          </>
+        ) : (
+          <>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              <Title>Busque uma música</Title>
+              <Input
+                {...register("musicSearch")}
+                type="music"
+                placeholder="Música"
+              />
+              <SubmitButton type="submit">
+                Buscar
+              </SubmitButton>
+              <a onClick={() => { setShowSearchForm(false), clear() }}>Clique aqui para cadastrar uma música!</a>
+            </Form>
+            {alertMessage && <Alert message={alertMessage} type={alertType} />}
+            {musics.length > 0 &&
+              <MusicListContainer>
+                <h3>Resultados da Busca:</h3>
+                {musics.map((music) => (
+                  <MusicItem>
+                    <p>{music.nameMusic}</p>
+                    <span>por {music.singer}</span>
+                  </MusicItem>
+                ))}
+              </MusicListContainer>
+            }
+          </>
+        )}
+      </Container>
+    </>
+  )
 }
