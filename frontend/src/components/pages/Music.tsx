@@ -89,13 +89,13 @@ const MusicItem = styled.div`
 
 
 type Inputs = {
-  nameMusic: string,
+  name: string,
   singer: string,
   musicSearch: string,
 };
 
 interface Music {
-  nameMusic: string;
+  name: string;
   singer: string;
 }
 
@@ -126,7 +126,7 @@ export default function Music() {
     } else {
       try {
         const response = await api.get(`/music/${data.musicSearch}`);
-        setAlertMessage(response.data.nameMusic);
+        setAlertMessage(response.data.name);
         setAlertType('sucess');
         setMusics(response.data)
       } catch (error: any) {
@@ -154,8 +154,8 @@ export default function Music() {
                 placeholder="Cantor"
               />
               <Input
-                {...register("nameMusic")}
-                type="nameMusic"
+                {...register("name")}
+                type="name"
                 placeholder="Nome da Música"
               />
               <SubmitButton type="submit">
@@ -185,7 +185,7 @@ export default function Music() {
                 <h3>Resultados da Busca:</h3>
                 {musics.map((music) => (
                   <MusicItem>
-                    <p>{music.nameMusic}</p>
+                    <p>{music.name}</p>
                     <span>por {music.singer}</span>
                   </MusicItem>
                 ))}

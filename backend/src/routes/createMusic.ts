@@ -3,10 +3,10 @@ import { Music } from "../../models/Music";
 
 const routerCreateMusic = Router();
 
-routerCreateMusic.post("/createMusic", async (req: Request, res: Response) => {
-  const { nameMusic, singer } = req.body;
+routerCreateMusic.post("/music", async (req: Request, res: Response) => {
+  const { name, singer } = req.body;
 
-  if (!nameMusic) {
+  if (!name) {
     return res.status(422).json({ msg: "O nome da música é obrigatório!" });
   }
 
@@ -15,11 +15,11 @@ routerCreateMusic.post("/createMusic", async (req: Request, res: Response) => {
   }
 
   try {
-    const music = Music.build({ nameMusic, singer });
+    const music = Music.build({ name, singer });
 
     await music.save();
 
-    res.status(200).json({ msg: "Música cadastrada com sucesso" });
+    res.status(201).json({ msg: "Música cadastrada com sucesso" });
   } catch (err) {
     console.log(err);
     res

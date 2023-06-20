@@ -1,12 +1,12 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 
 interface MusicAttrs {
-  nameMusic: string;
+  name: string;
   singer: string;
 }
 
 interface MusicDoc extends Document {
-  nameMusic: string;
+  name: string;
   singer: string;
 }
 
@@ -15,7 +15,7 @@ interface MusicModel extends Model<MusicDoc> {
 }
 
 const musicSchema = new Schema<MusicDoc, MusicModel>({
-  nameMusic: String,
+  name: String,
   singer: String,
 });
 

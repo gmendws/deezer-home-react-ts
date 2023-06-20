@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { json } from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -13,6 +13,7 @@ dotenv.config();
 const app = express()
 app.use(cors())
 app.use(json())
+
 app.use(routerLogin)
 app.use(routerRegister)
 app.use(routerCreateMusic)
