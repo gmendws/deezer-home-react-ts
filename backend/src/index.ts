@@ -22,8 +22,12 @@ app.use(routerMusic)
 const dbUser = process.env.DB_USER
 const dbPassword = process.env.DB_PASS
 
+const maxConections = 5;
+
 mongoose
-  .connect(`mongodb+srv://${dbUser}:${dbPassword}@cluster0.vghpoaf.mongodb.net/?retryWrites=true&w=majority`)
+  .connect(`mongodb+srv://${dbUser}:${dbPassword}@cluster0.vghpoaf.mongodb.net/?retryWrites=true&w=majority`, {
+    maxPoolSize: maxConections
+  })
   .then(() => {
     console.log('Conectado ao banco!')
     app.listen(3000)

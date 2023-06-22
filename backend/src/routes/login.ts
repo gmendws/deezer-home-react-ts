@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt, { Secret } from "jsonwebtoken";
 import { User } from "../../models/User";
 import dotenv from 'dotenv';
-import { getRedis, setRedis } from "../redisConfig";
 
 const routerLogin = Router();
 dotenv.config();
@@ -35,8 +34,6 @@ routerLogin.post("/auth/login", async (req: Request, res: Response) => {
     const secret = process.env.SECRET as Secret;
 
     const token = jwt.sign({ id: user._id }, secret); 
-
-    await setRedis(`user-${user._id}`, JSON.stringify(user));
 
     res.status(200).json({ message: "Autenticação realizada com sucesso", token });
   } catch (err) {
