@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt, { Secret } from "jsonwebtoken";
 import { User } from "../../models/User";
 import dotenv from 'dotenv';
+import createChannel from "../channelRabbit";
 
 const routerLogin = Router();
 dotenv.config();
@@ -30,6 +31,10 @@ routerLogin.post("/auth/login", async (req: Request, res: Response) => {
     if (!passwordMatch) {
       return res.status(401).json({ error: "Senha inválida!" });
     }
+
+    const log = { timestamp: new Date(), email: user.email, action: 'login' };
+    const channel = await createChannel();
+    channel.sendToQueue('logs-fila', Buffer.from(JSON.stringify(log)));
 
     const secret = process.env.SECRET as Secret;
 
