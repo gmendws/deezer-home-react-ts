@@ -3,6 +3,7 @@ import Box from "../layout/Box";
 import styled from 'styled-components'
 import NavBar from "../layout/NavBar";
 import { Title } from "../styled-components/Title.style";
+import Chat from "../layout/Chat";
 
 
 const SectionHome = styled.section`
