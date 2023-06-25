@@ -1,7 +1,8 @@
 import { Router, Request, Response } from "express";
 import { Music } from "../../models/Music";
 import { param, validationResult } from "express-validator";
-import redisClient from "../redisClient";
+import redisClient from "../middlewares/redisClient";
+import authenticateToken from "../middlewares/authenticateToken";
 
 const routerMusic = Router();
 
@@ -10,7 +11,7 @@ routerMusic.get("/music/:musicSearch?", [
     .optional()
     .matches(/^[A-Za-z\s]+$/)
     .withMessage("O campo 'Música' deve conter apenas letras e espaços"),
-], async (req: Request, res: Response) => {
+], authenticateToken, async (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array()[0].msg });

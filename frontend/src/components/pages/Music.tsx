@@ -1,13 +1,13 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { string } from 'zod';
 import api from '../../services/api';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from "../../img/Deezer_Logo_RVB_White.svg";
 import { Title } from '../styled-components/Title.style';
 import { SubmitButton } from '../styled-components/SubmitButton.style';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Alert from '../layout/Alert';
+import config from '../../config/config';
 
 const DivLogo = styled.div`
   width: 148px;
@@ -87,7 +87,6 @@ const MusicItem = styled.div`
   }
 `;
 
-
 type Inputs = {
   name: string,
   singer: string,
@@ -116,21 +115,21 @@ export default function Music() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (!showSearchForm) {
       try {
-        const response = await api.post("/createMusic", data);
+        const response = await api.post("/music", data, config);
         setAlertMessage(response.data.msg);
         setAlertType('sucess');
       } catch (error: any) {
-        setAlertMessage(error.response.data.msg);
+        setAlertMessage(error.response.data.msg != '' ? error.response.data.msg : error.response.data.error);
         setAlertType('error');
       }
     } else {
       try {
-        const response = await api.get(`/music/${data.musicSearch}`);
+        const response = await api.get(`/music/${data.musicSearch}`, config);
         setAlertMessage(response.data.name);
         setAlertType('sucess');
         setMusics(response.data)
       } catch (error: any) {
-        setAlertMessage(error.response.data.errors);
+        setAlertMessage(error.response.data.error != '' ? error.response.data.error : error.response.data.errors);
         setAlertType('error');
       }
     }
@@ -183,8 +182,8 @@ export default function Music() {
             {musics.length > 0 &&
               <MusicListContainer>
                 <h3>Resultados da Busca:</h3>
-                {musics.map((music) => (
-                  <MusicItem>
+                {musics.map((music, index) => (
+                  <MusicItem key={index}>
                     <p>{music.name}</p>
                     <span>por {music.singer}</span>
                   </MusicItem>

@@ -1,9 +1,10 @@
 import { Router, Request, Response } from "express";
 import { Music } from "../../models/Music";
+import authenticateToken from "../middlewares/authenticateToken";
 
 const routerCreateMusic = Router();
 
-routerCreateMusic.post("/music", async (req: Request, res: Response) => {
+routerCreateMusic.post("/music", authenticateToken, async (req: Request, res: Response) => {
   const { name, singer } = req.body;
 
   if (!name) {
