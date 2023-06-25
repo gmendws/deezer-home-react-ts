@@ -59,6 +59,7 @@ export default function NavBar() {
   const handleClick = () => {
     if (isLogged) {
       localStorage.removeItem('token');
+      localStorage.removeItem('name');
       setIsLogged(false);
     } else {
       window.location.href = '/login';

@@ -72,10 +72,11 @@ export default function Login() {
     try {
       const response = await api.post("/auth/login", data);
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('name', response.data.name);
       setAlertMessage(response.data.msg);
       navigate('/music');
     } catch (error: any ) {
-      setAlertMessage(error.response.data.msg);
+      setAlertMessage(error.response.data.error);
       setAlertType('error');
     }
   };

@@ -5,6 +5,7 @@ import { User } from "../../models/User";
 import dotenv from 'dotenv';
 import createChannel from "../middlewares/channelRabbit";
 import xss from 'xss';
+import io from "../socket-io";
 
 const routerLogin = Router();
 dotenv.config();
@@ -36,6 +37,16 @@ routerLogin.post("/auth/login", async (req: Request, res: Response) => {
       return res.status(401).json({ error: "Senha inválida!" });
     }
 
+    io.emit('join', user.email, (error: Error) => {
+      if (error) {
+        // A emissão da mensagem falhou
+        console.error('Erro ao emitir a mensagem para o socket de join:', error);
+      } else {
+        // A mensagem foi emitida com sucesso
+        console.log('Mensagem emitida para o socket de join');
+      }
+    });
+
     const log = { timestamp: new Date(), email: user.email, action: 'login' };
     const channel = await createChannel();
     channel.sendToQueue('logs-fila', Buffer.from(JSON.stringify(log)));
@@ -45,7 +56,7 @@ routerLogin.post("/auth/login", async (req: Request, res: Response) => {
     const token = jwt.sign({ id: user._id }, secret); 
     const escapedToken = encodeURIComponent(token);
 
-    res.status(200).json({ message: "Autenticação realizada com sucesso", token: escapedToken });
+    res.status(200).json({ name: user.name, message: "Autenticação realizada com sucesso", token: escapedToken });
   } catch (err) {
     console.log(err);
     res

@@ -161,6 +161,7 @@ export default function Music() {
                 Enviar
               </SubmitButton>
               <a onClick={() => { setShowSearchForm(true), clear() }}>Clique aqui para consultar as músicas cadastradas!</a>
+              <Link to="/chat">Acessar Chat</Link>
             </Form>
             {alertMessage && <Alert message={alertMessage} type={alertType} />}
           </>
@@ -177,7 +178,8 @@ export default function Music() {
                 Buscar
               </SubmitButton>
               <a onClick={() => { setShowSearchForm(false), clear() }}>Clique aqui para cadastrar uma música!</a>
-            </Form>
+              <Link to="/chat">Acessar Chat</Link>
+            </Form>            
             {alertMessage && <Alert message={alertMessage} type={alertType} />}
             {musics.length > 0 &&
               <MusicListContainer>
@@ -189,7 +191,7 @@ export default function Music() {
                   </MusicItem>
                 ))}
               </MusicListContainer>
-            }
+            }         
           </>
         )}
       </Container>

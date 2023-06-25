@@ -4,6 +4,7 @@ import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
 import Music from "./components/pages/Music";
 import isAuthenticated from "./services/auth";
+import Chat from "./components/layout/Chat";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/music" 
                Component={!isAuthenticated() ? Home : Music } 
         />
+        <Route path="/chat" Component={Chat}/>
       </Routes>
     </Router>
   )
